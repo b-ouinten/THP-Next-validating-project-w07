@@ -10,14 +10,14 @@ class Item {
 
     if (this.name === 'Aged Brie') {
       this.quality++;
-    } else if (/^Backstage\s/.test(this.name)) {
+    } else if (/^Backstage/.test(this.name)) {
       if (this.sellIn < 0) this.quality = 0;
       else if (this.sellIn < 6) this.quality += 3;
       else if (this.sellIn < 11) this.quality += 2;
       else this.quality++;
     } else if (/^Sulfuras/.test(this.name)) {
       this.quality = 80;
-    } else if (/^Conjured\s/.test(this.name)) {
+    } else if (/^Conjured/.test(this.name)) {
       if (this.sellIn >= 0) this.quality -=2;
       else this.quality -= 4;
     } else {
