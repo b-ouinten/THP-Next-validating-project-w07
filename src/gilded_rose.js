@@ -8,7 +8,7 @@ class Item {
   updateQuality() {
     this.sellIn--;
 
-    if (this.name === 'Aged Brie') {
+    if (/^Aged Brie/.test(this.name)) {
       this.quality++;
     } else if (/^Backstage/.test(this.name)) {
       if (this.sellIn < 0) this.quality = 0;
