@@ -32,21 +32,26 @@ describe("GildedRose shop manager", function () {
     });
   });
 
-  it("Lower the quality by 2 if the expiration date has already been reached (normal items) !", function () {
-    listItems.push(new Item("Mana Cake", 0, 30));
-    listItems.push(new Item("Pop-corn", -1, 20));
+  it("Lower the quality by 2 if the expiration date has been reached (normal items) !", function () {
+    listItems.push(new Item("Mana Cake", 1, 29));
+    listItems.push(new Item("Pop-corn", 0, 20));
+    listItems.push(new Item("Eyewear", -1, 1));
 
     const gildedRose = new Shop(listItems);
     const items = gildedRose.updateQuality();
 
     const expected = [
       { 
-        expectedSellIn: -1, 
+        expectedSellIn: 0, 
         expectedQuality: 28,
       },
       { 
-        expectedSellIn: -2, 
+        expectedSellIn: -1, 
         expectedQuality: 18,
+      },
+      { 
+        expectedSellIn: -2, 
+        expectedQuality: 0,
       },
     ];
 
@@ -136,7 +141,7 @@ describe("GildedRose shop manager", function () {
     })
   });
 
-  it("The quality pass to zero and stay there when the expiration date has already passed (Backstage) !", function () {
+  it("The quality pass to zero and stay there when the expiration date has assed (Backstage) !", function () {
     listItems.push(new Item("Backstage passes to a TAFKAL80ETC concert", 0, 20));
     listItems.push(new Item("Backstage passes to a TAFKAL80ETC concert", -1, 5));
     listItems.push(new Item("Backstage passes to a TAFKAL80ETC concert", -2, 51));
@@ -167,8 +172,8 @@ describe("GildedRose shop manager", function () {
     })
   });
 
-  it("The quality of Sulfuras never changes !", function () {
-    listItems.push(new Item("Sulfuras, Hand of Ragnaros", 4, 50));
+  it("The quality of Sulfuras already equal to 80 !", function () {
+    listItems.push(new Item("Sulfuras, Hand of Ragnaros", 4, 80));
     listItems.push(new Item("Backstage passes to a TAFKAL80ETC concert", 5, 30));
 
     const gildedRose = new Shop(listItems);
@@ -176,12 +181,69 @@ describe("GildedRose shop manager", function () {
 
     const expected = [
       { 
-        expectedSellIn: 4, 
-        expectedQuality: 50,
+        expectedSellIn: 3, 
+        expectedQuality: 80,
       },
       { 
         expectedSellIn: 4, 
         expectedQuality: 33,
+      },
+    ];
+
+    expected.forEach(({expectedSellIn, expectedQuality}, indx) => {
+      const { sellIn, quality } = items[indx];
+
+      expect(sellIn).toBe(expectedSellIn);
+      expect(quality).toBe(expectedQuality);
+    })
+  });
+
+  it("Lower the quality of conjured items by 2 !", function () {
+    listItems.push(new Item("Conjured Dark Blade", 10, 18));
+    listItems.push(new Item("Conjured Dark Blade", 3, 6));
+
+    const gildedRose = new Shop(listItems);
+    const items = gildedRose.updateQuality();
+
+    const expected = [
+      { 
+        expectedSellIn: 9, 
+        expectedQuality: 16,
+      },
+      { 
+        expectedSellIn: 2, 
+        expectedQuality: 4,
+      },
+    ];
+
+    expected.forEach(function ({expectedSellIn, expectedQuality}, idx) {
+      const { sellIn, quality } = items[idx];
+
+      expect(sellIn).toBe(expectedSellIn);
+      expect(quality).toBe(expectedQuality);
+    });
+  });
+
+  it("Lower the quality by 4 if the expiration date has been reached (conjured items) !", function () {
+    listItems.push(new Item("Conjured Mana Cake", 1, 29));
+    listItems.push(new Item("Conjured Pop-corn", 0, 20));
+    listItems.push(new Item("Conjured Eyewear", -1, 1));
+
+    const gildedRose = new Shop(listItems);
+    const items = gildedRose.updateQuality();
+
+    const expected = [
+      { 
+        expectedSellIn: 0, 
+        expectedQuality: 27,
+      },
+      { 
+        expectedSellIn: -1, 
+        expectedQuality: 16,
+      },
+      { 
+        expectedSellIn: -2, 
+        expectedQuality: 0,
       },
     ];
 
@@ -219,7 +281,7 @@ describe("GildedRose shop manager", function () {
     })
   });
 
-  it("The quality will not be changed if it is higher than 50 !", function () {
+  it("The quality cannot exceed 50 !", function () {
     listItems.push(new Item("Mana Cake", 2, 52));
     listItems.push(new Item("Backstage passes to a TAFKAL80ETC concert", 7, 51));
     listItems.push(new Item("Aged Brie", 10, 51));
@@ -230,15 +292,15 @@ describe("GildedRose shop manager", function () {
     const expected = [
       { 
         expectedSellIn: 1, 
-        expectedQuality: 51,
+        expectedQuality: 50,
       },
       { 
         expectedSellIn: 6, 
-        expectedQuality: 51,
+        expectedQuality: 50,
       },
       { 
         expectedSellIn: 9, 
-        expectedQuality: 51,
+        expectedQuality: 50,
       },
     ];
 

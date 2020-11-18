@@ -21,11 +21,7 @@
   },
   "homepage": "https://github.com/emilybache/GildedRose-Refactoring-Kata",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "1.7.0",
-    "babel-register": "^6.26.0",
-    "jasmine": "^3.2.0",
-    "jasmine-ts-console-reporter": "^3.1.1"
+    "jasmine": "^3.2.0"
   },
   "babel": {
     "presets": [

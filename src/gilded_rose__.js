@@ -1,9 +1,4 @@
 class Item {
-  static agedBrie = 'Aged Brie';
-  static backStage = 'Backstage passes to a TAFKAL80ETC concert';
-  static sulfuras = 'Sulfuras, Hand of Ragnaros';
-  
-  
   constructor(name, sellIn, quality){
     this.name = name;
     this.sellIn = sellIn;
